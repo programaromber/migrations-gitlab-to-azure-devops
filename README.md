@@ -1,21 +1,24 @@
 
-### migrations-gitlab-to-azure-devops
-## Classes Diagram
-1. Client Response
+### Projeto para Migração de repositos do Gitlab para Azure Devops (Azure Repos)
 
-2. MVC
+O projeto foi inicalmente uma ideia minha e do Emerson Silva para ajudar a comunidade Devops para migrações de repositoios do Gilab para a Azure.
+Encontramos uma unica fonte de ajuda para fazer a operação escrita em C# porem era um video e não possuia repostorio.
+Segue o link video: https://www.youtube.com/watch?v=RAPEuf9qI_c
+
+Estruturamos o projeto em formato de licença GPL 3.0.
 
 
-## Patterns
+## Tecnologias
+1. Java 14
+2. Spring Batch
+3. GitlabApi (lib)
+4. Jgit (lib)
 
-1. MVC.
-2. Strategy with EnumRespondeType.
-3. Adapter with IDownload for CsvDownloadAdapter and JsonDownloadAdapter.
-
-## Concetps
-1. Clean code.
-4. Solid.
+## Conceitos
+1. Solid.
+2. DDD.
 3. TDD.
+
 
 ## Start from spring
 
@@ -23,54 +26,23 @@ Command:
 ```
 mvn spring-boot:run
 ```
-#
-## Start from docker
 
-Command:
-1.
-```
-mvn package
-```
-2.
-```
-docker build --tag challenge-evoluum .
-```
-3.
-```
-docker run -p 8080:8080 challenge-evoluum
-```
+## Ambiente.properties
 
-## Basic Auth
-
-1. with browser for Swagger
+- Alterar as propriedades conforme aas informações abaixo para o Gitlab e Azure Devops
 ```
-Username: evoluum
+migrations.gitlab.uri=[GITLAB_URL]
+migrations.gitlab.token=[GITLAB_TOKEN]
+migrations.gitlab.path=[NOME_NAMESPACE]
+migrations.gitlab.repository=[CASO_SEJA_REPOSITORIO_ESPECIFICO]
+migrations.gitlab.username=[GITLAB_USERNAME]
+migrations.gitlab.password=[GITLAB_PASSWORD]
+migrations.azure.devops.uri=https://dev.azure.com/
+migrations.azure.devops.username=[AZURE_GIT_USERNAME]
+migrations.azure.devops.password=[AZURE_GIT_PASSWORD]
+migrations.azure.devops.token=[TOKEN_AZURE_API]
+migrations.azure.devops.organization=[NOME_ORGANIZACAO_AZURE]
+migrations.azure.devops.project=[NOME_PROJETO_AZURE]
+migrations.azure.devops.api-version=6.0
 ```
-```
-Password: f57662b40d361e3882e9f4c5920b2eaa98294db2a34720e3b8fa0d4895964d83
-```
-
-2. with postman
-```
-'Authorization: Basic ZXZvbHV1bTpmNTc2NjJiNDBkMzYxZTM4ODJlOWY0YzU5MjBiMmVhYTk4Mjk0ZGIyYTM0NzIwZTNiOGZhMGQ0ODk1OTY0ZDgz'
-```
-
-
-## Swagger 
-
-Url: http://localhost:8080/swagger-ui.html
-
-
-## Postman Collections
-
-Url: [click here](https://github.com/rafasall/challenge-evoluum/blob/master/challenge-evoluum.postman_collection.json)
-
-## API Endpoints
-- Request for all states: http://localhost:8080/api/v1/states
-- Request for county by state: http://localhost:8080/api/v1/states/sp/countys
-- Request for county by name: http://localhost:8080/api/v1/countys/abaetetuba
-- Request for all states CSV file download: http://localhost:8080/api/v1/states/CSV
-- Request for all states JSON file download: http://localhost:8080/api/v1/states/JSON
-- Request for countys by state CSV file download: http://localhost:8080/api/v1/states/pa/countys/CSV
-- Request for countys by state JSON file download: http://localhost:8080/api/v1/states/rj/countys/JSON
 
