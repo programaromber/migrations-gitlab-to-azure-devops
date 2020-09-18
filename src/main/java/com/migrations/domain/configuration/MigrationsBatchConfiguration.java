@@ -1,8 +1,10 @@
 package com.migrations.domain.configuration;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.gitlab4j.api.models.Project;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -45,18 +47,31 @@ public class MigrationsBatchConfiguration {
 	
 	@Bean
 	public ItemReader<Project> reader() {
+		return new ProjectReader(getProjetcts());
+	}
+	
+	private List<String> getNamespaces() {
 		List<String> namespaces = gitLabService.findAllNamespaces().stream()
 				.filter( n ->  n.getFullPath().contains(gitLabProperties.getPath()))
-						.map(p -> p.getName().toLowerCase()).collect(Collectors.toList());
+				.map(p -> p.getName().toLowerCase()).collect(Collectors.toList());
+		log.info(String.format("[%s] LOAD NAMESPACES: %d", gitLabProperties.getPath(), StringUtils.join(namespaces)));
+		return namespaces;
 		
-		List<Project> projects = gitLabService.findAllProjects().stream()
-				.filter(p -> 
-				(gitLabProperties.getRepository() == "" || p.getName().equals(gitLabProperties.getRepository()) ) &&
-				namespaces.stream()
-						.anyMatch(n -> n.toLowerCase().contains(p.getNamespace().getFullPath().toLowerCase())) 
-		).collect(Collectors.toList());
-		log.info(String.format("[%s] LOAD PROJECTS: %d", gitLabProperties.getPath(), projects.size()));
-		return new ProjectReader(projects);
+	}
+	
+	private List<Project> getProjetcts() {
+		try {
+			List<Project> projects = gitLabService.findAllProjects().stream()
+					.filter(p -> 
+					(gitLabProperties.getRepository() == "" || p.getName().equals(gitLabProperties.getRepository()) ) &&
+					getNamespaces().stream()
+					.anyMatch(n -> n.toLowerCase().contains(p.getNamespace().getFullPath().toLowerCase())) 
+							).collect(Collectors.toList());
+			log.info(String.format("[%s] LOAD PROJECTS: %d", gitLabProperties.getPath(), projects.size()));
+			return projects;
+		} catch (Exception e) {
+			return new ArrayList<Project>();
+		}
 	}
 
 	@Bean
@@ -64,10 +79,6 @@ public class MigrationsBatchConfiguration {
 		return new MigrationItemProcessor();
 	}
 	
-	public void loadProjects() {
-		
-	}
-
 	@Bean
 	public Job migrationsJob(JobNotificationListener listener, Step step) {
 		
@@ -89,8 +100,6 @@ public class MigrationsBatchConfiguration {
 			.writer(writer)
 			.build();
 	}
-
-
 
 	
 }

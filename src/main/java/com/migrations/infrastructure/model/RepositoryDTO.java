@@ -11,7 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class RepositoryDTO {
 
-	private String project;
 	private String name;
 	private String url;
 	

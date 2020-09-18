@@ -40,7 +40,7 @@ public class GitLabClientService {
 			
 			return (Namespace) this.gitLabApi.getNamespaceApi().getGroupIdOrPath(path);
 		} catch (GitLabApiException e) {
-			log.error("Erro de comunição com serviço GITLAB.", e);
+			log.info("Erro de comunição com serviço GITLAB.");
 			return null;
 		}
 	}
@@ -51,7 +51,7 @@ public class GitLabClientService {
 		try {
 			return this.gitLabApi.getProjectApi().getProjects();
 		} catch (GitLabApiException e) {
-			log.error("Erro de comunição com serviço GITLAB.", e);
+			log.info("Erro de comunição com serviço GITLAB.");
 			return null;
 		}
 	}
@@ -60,7 +60,7 @@ public class GitLabClientService {
 		try {
 			return this.gitLabApi.getProjectApi().getProjects(path);
 		} catch (GitLabApiException e) {
-			log.error("Erro de comunição com serviço GITLAB.", e);
+			log.info("Erro de comunição com serviço GITLAB.");
 			return null;
 		}
 	}

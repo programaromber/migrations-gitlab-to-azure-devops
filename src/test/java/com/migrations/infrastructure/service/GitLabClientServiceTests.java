@@ -14,34 +14,28 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
-@RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
-class GitLabClientServiceTests {
+class GitLabClientServiceTests  {
 
-//	@Mock
-	@Autowired
+	@Mock
 	GitLabClientService service;
 
-//	@Before
-//	public void initialize() {
-//		MockitoAnnotations.initMocks(this);
-//	}
+	@Before
+	public void initialize() {
+		MockitoAnnotations.initMocks(this);
+	}
 
 	@Test
 	void findAllNamespaces() {
 		List<Namespace> namespaces = this.service.findAllNamespaces();
-		assertTrue(namespaces != null);
-//		when(namespaces).thenReturn(new ArrayList<>());
-//		assertEquals(true, namespaces != null);
+		when(namespaces).thenReturn(new ArrayList<>());
+		assertEquals(0, namespaces.size());
 	}
 	
 
@@ -49,16 +43,16 @@ class GitLabClientServiceTests {
 	void findAllProjects() {
 		List<Project> projects = this.service.findAllProjects();
 		assertTrue(projects != null);
-//		when(projects).thenReturn(new ArrayList<>());
-//		assertEquals(true, projects != null);
+		when(projects).thenReturn(new ArrayList<>());
+		assertEquals(0, projects.size());
 	}
 
 	@Test
 	void findAllProjectsByPath() {
-		List<Project> projects = this.service.findAllProjectsByPath("coe");
-		assertTrue(projects != null);
-//		when(projects).thenReturn(new ArrayList<>());
-//		assertEquals(true, projects != null);
+		List<Project> projects = this.service.findAllProjectsByPath("teste");
+		when(projects).thenReturn(new ArrayList<>());
+		assertEquals(0, projects.size());
 	}
+
 
 }
